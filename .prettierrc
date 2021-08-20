@@ -1,0 +1,16 @@
+{
+    "tabWidth": 4,
+    "jsxBracketSameLine": true,
+    "printWidth": 120,
+    // "singleQuote": true,
+    "overrides": [
+        {
+            "files": "*.php",
+            "options": {
+                "tabWidth": 4,
+                "jsxBracketSameLine": true,
+                "printWidth": 280
+            }
+        }
+    ]
+}
