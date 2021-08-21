@@ -2,14 +2,13 @@
     "tabWidth": 4,
     "jsxBracketSameLine": true,
     "printWidth": 120,
-    // "singleQuote": true,
     "overrides": [
         {
-            "files": "*.php",
+            "files": "*.pug",
             "options": {
                 "tabWidth": 4,
-                "jsxBracketSameLine": true,
-                "printWidth": 280
+                "printWidth": 280,
+                "semi": true
             }
         }
     ]

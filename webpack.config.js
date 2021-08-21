@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const CopyWebPackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === "dev";
 
@@ -30,6 +31,7 @@ module.exports = {
                 {
                     from: "./shared",
                     to: "",
+                    noErrorOnMissing: true,
                 },
             ],
         }),
@@ -69,9 +71,15 @@ module.exports = {
                     },
                     {
                         loader: "css-loader",
+                        options: {
+                            sourceMap: false,
+                        },
                     },
                     {
                         loader: "postcss-loader",
+                        options: {
+                            sourceMap: false,
+                        },
                     },
                     {
                         loader: "sass-loader",
@@ -120,5 +128,10 @@ module.exports = {
                 exclude: /node_modules/,
             },
         ],
+    },
+
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin()],
     },
 };
