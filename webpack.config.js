@@ -15,7 +15,7 @@ const dirNode = "node_modules";
 module.exports = {
     entry: [path.join(dirApp, "index.js"), path.join(dirStyles, "index.scss")],
     resolve: {
-        modules: [dirApp, dirShared, dirStyles, dirNode],
+        modules: [dirApp, dirShared, dirNode],
     },
 
     plugins: [
@@ -37,7 +37,7 @@ module.exports = {
         }),
 
         new MiniCssExtractPlugin({
-            filename: "[name].scss",
+            filename: "[name].css",
             chunkFilename: "[id].css",
         }),
 
