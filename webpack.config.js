@@ -1,9 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
+
 const CopyWebPackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
+// const TerserPlugin = require("terser-webpack-plugin");
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === "dev";
 
@@ -14,6 +15,7 @@ const dirNode = "node_modules";
 
 module.exports = {
     entry: [path.join(dirApp, "index.js"), path.join(dirStyles, "index.scss")],
+
     resolve: {
         modules: [dirApp, dirShared, dirNode],
     },
@@ -29,9 +31,17 @@ module.exports = {
         new CopyWebPackPlugin({
             patterns: [
                 {
+                    from: "./app/service-worker.js",
+                    to: "",
+                },
+                {
+                    from: "./offline.html",
+                    to: "",
+                    git,
+                },
+                {
                     from: "./shared",
                     to: "",
-                    noErrorOnMissing: true,
                 },
             ],
         }),
@@ -55,6 +65,10 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.pug$/,
+                use: ["pug-loader"],
+            },
+            {
                 test: /\.js$/,
                 use: {
                     loader: "babel-loader",
@@ -63,12 +77,7 @@ module.exports = {
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            publicPath: "",
-                        },
-                    },
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: "css-loader",
                         options: {
@@ -90,17 +99,13 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(jpe?g|png|gif|svg|woff2?|fnt|webp)$/,
+                test: /\.(jpe?g|png|gif|svg|fnt|webp)$/,
                 loader: "file-loader",
                 options: {
                     name(file) {
-                        return "[hash].[ext]";
+                        return "[name].[hash].[ext]";
                     },
                 },
-            },
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                type: "asset",
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
@@ -116,22 +121,11 @@ module.exports = {
                     },
                 ],
             },
-            {
-                test: /\.(glsl|frag|vert)$/,
-                loader: "raw-loader",
-                exclude: /node_modules/,
-            },
-
-            {
-                test: /\.(glsl|frag|vert)$/,
-                loader: "glslify-loader",
-                exclude: /node_modules/,
-            },
         ],
     },
 
-    optimization: {
-        minimize: true,
-        minimizer: [new TerserPlugin()],
-    },
+    // optimization: {
+    //     minimize: true,
+    //     minimizer: [new TerserPlugin()],
+    // },
 };

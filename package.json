@@ -2,11 +2,11 @@
     "name": "boilerplate",
     "version": "1.0.0",
     "scripts": {
+        "start": "concurrently --kill-others \"npm run backend:dev\" \"npm run frontend:dev\"",
         "backend:build": "node app.js",
         "backend:dev": "nodemon app.js",
         "frontend:build": "webpack --progress --config webpack.config.build.js",
-        "frontend:dev": "webpack serve --progress --config webpack.config.development.js",
-        "start": "concurrently --kill-others \"npm run backend:dev\" \"npm run frontend:dev\""
+        "frontend:dev": "cross-env NODE_ENV=dev webpack serve --progress --config webpack.config.development.js"
     },
     "author": "Jordan Davila",
     "license": "ISC",
@@ -15,6 +15,7 @@
         "babel-loader": "^8.2.2",
         "clean-webpack-plugin": "^4.0.0-alpha.0",
         "copy-webpack-plugin": "^9.0.1",
+        "cross-env": "^7.0.3",
         "css-loader": "^6.2.0",
         "eslint": "^7.32.0",
         "eslint-config-standard": "^16.0.3",
@@ -40,11 +41,15 @@
     },
     "dependencies": {
         "@prismicio/client": "^5.1.0",
+        "body-parser": "^1.19.0",
         "dotenv": "^10.0.0",
         "errorhandler": "^1.5.1",
         "express": "^4.17.1",
+        "method-override": "^3.0.0",
+        "morgan": "^1.10.0",
         "nodemon": "^2.0.12",
         "prismic-dom": "^2.2.6",
-        "pug": "^3.0.2"
+        "pug": "^3.0.2",
+        "staticify": "^5.0.0"
     }
 }
