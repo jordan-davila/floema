@@ -2,7 +2,7 @@
     "name": "boilerplate",
     "version": "1.0.0",
     "scripts": {
-        "start": "concurrently --kill-others \"npm run backend:dev\" \"npm run frontend:dev\"",
+        "start": "concurrently --kill-others \"yarn run backend:dev\" \"yarn run frontend:dev\"",
         "backend:build": "node app.js",
         "backend:dev": "nodemon app.js",
         "frontend:build": "webpack --progress --config webpack.config.build.js",
@@ -16,7 +16,7 @@
         "clean-webpack-plugin": "^4.0.0-alpha.0",
         "copy-webpack-plugin": "^9.0.1",
         "cross-env": "^7.0.3",
-        "css-loader": "^6.2.0",
+        "css-loader": "^5.2.2",
         "eslint": "^7.32.0",
         "eslint-config-standard": "^16.0.3",
         "eslint-loader": "^4.0.2",
@@ -50,6 +50,7 @@
         "nodemon": "^2.0.12",
         "prismic-dom": "^2.2.6",
         "pug": "^3.0.2",
-        "staticify": "^5.0.0"
+        "staticify": "^5.0.0",
+        "ua-parser-js": "^0.7.28"
     }
 }

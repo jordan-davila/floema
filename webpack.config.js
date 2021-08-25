@@ -1,10 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
 
-const CopyWebPackPlugin = require("copy-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-// const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === "dev";
 
@@ -17,7 +18,7 @@ module.exports = {
     entry: [path.join(dirApp, "index.js"), path.join(dirStyles, "index.scss")],
 
     resolve: {
-        modules: [dirApp, dirShared, dirNode],
+        modules: [dirApp, dirShared, dirStyles, dirNode],
     },
 
     plugins: [
@@ -25,20 +26,8 @@ module.exports = {
             IS_DEVELOPMENT,
         }),
 
-        // Automatically load modules instead of having to import or require them everywhere.
-        // new webpack.ProvidePlugin({}),
-
-        new CopyWebPackPlugin({
+        new CopyWebpackPlugin({
             patterns: [
-                {
-                    from: "./app/service-worker.js",
-                    to: "",
-                },
-                {
-                    from: "./offline.html",
-                    to: "",
-                    git,
-                },
                 {
                     from: "./shared",
                     to: "",
@@ -56,76 +45,79 @@ module.exports = {
                 plugins: [
                     ["gifsicle", { interlaced: true }],
                     ["jpegtran", { progressive: true }],
-                    ["optipng", { optimizationLevel: 15 }],
+                    ["optipng", { optimizationLevel: 8 }],
                 ],
             },
         }),
+
+        new CleanWebpackPlugin(),
     ],
 
     module: {
         rules: [
-            {
-                test: /\.pug$/,
-                use: ["pug-loader"],
-            },
             {
                 test: /\.js$/,
                 use: {
                     loader: "babel-loader",
                 },
             },
+
             {
-                test: /\.(sa|sc|c)ss$/,
+                test: /\.scss$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: "",
+                        },
+                    },
                     {
                         loader: "css-loader",
-                        options: {
-                            sourceMap: false,
-                        },
                     },
                     {
                         loader: "postcss-loader",
-                        options: {
-                            sourceMap: false,
-                        },
                     },
                     {
                         loader: "sass-loader",
-                        options: {
-                            sourceMap: false,
-                        },
                     },
                 ],
             },
+
             {
-                test: /\.(jpe?g|png|gif|svg|fnt|webp)$/,
+                test: /\.(jpe?g|png|gif|svg|woff2?|fnt|webp)$/,
                 loader: "file-loader",
                 options: {
                     name(file) {
-                        return "[name].[hash].[ext]";
+                        return "[name].[ext]";
                     },
                 },
             },
+
             {
-                test: /\.(jpe?g|png|gif|svg)$/i,
+                test: /\.(jpe?g|png|gif|svg|webp)$/i,
                 use: [
                     {
                         loader: ImageMinimizerPlugin.loader,
-                        options: {
-                            severityError: "warning", // Ignore errors on corrupted images
-                            minimizerOptions: {
-                                plugins: ["gifsicle"],
-                            },
-                        },
                     },
                 ],
+            },
+
+            {
+                test: /\.(glsl|frag|vert)$/,
+                loader: "raw-loader",
+                exclude: /node_modules/,
+            },
+
+            {
+                test: /\.(glsl|frag|vert)$/,
+                loader: "glslify-loader",
+                exclude: /node_modules/,
             },
         ],
     },
 
-    // optimization: {
-    //     minimize: true,
-    //     minimizer: [new TerserPlugin()],
-    // },
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin()],
+    },
 };
