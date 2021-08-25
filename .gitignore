@@ -33,3 +33,4 @@ yarn-error.log*
 # misc
 .prettierignore
 *.pem
+*.code-workspace
