@@ -2,7 +2,7 @@
     "name": "boilerplate",
     "version": "1.0.0",
     "scripts": {
-        "start": "concurrently --kill-others \"yarn run backend:dev\" \"yarn run frontend:dev\"",
+        "start": "concurrently --kill-others \"npm run backend:dev\" \"npm run frontend:dev\"",
         "backend:build": "node app.js",
         "backend:dev": "nodemon app.js",
         "frontend:build": "webpack --progress --config webpack.config.build.js",
