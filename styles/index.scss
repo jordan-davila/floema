@@ -6,6 +6,7 @@
 
 @import "./base/fonts";
 @import "./base/reset";
+@import "./base/base";
 
 @import "./shared/links";
 @import "./shared/sections";
@@ -16,5 +17,9 @@
 @import "./components/preloader";
 
 @import "./pages/home/home";
-
 @import "./pages/about/about";
+@import "./pages/about/gallery";
+@import "./pages/about/content";
+@import "./pages/about/highlight";
+@import "./pages/details/details";
+@import "./pages/collections/collections";
