@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const app = require("./config");
 const Prismic = require("@prismicio/client");
 const PrismicDOM = require("prismic-dom");
