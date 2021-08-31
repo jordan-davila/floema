@@ -28,6 +28,7 @@
         "imagemin-gifsicle": "^7.0.0",
         "imagemin-jpegtran": "^7.0.0",
         "imagemin-optipng": "^8.0.0",
+        "include-media": "^1.4.10",
         "mini-css-extract-plugin": "^2.2.0",
         "postcss-loader": "^6.1.1",
         "prettier": "^2.3.2",
@@ -48,9 +49,11 @@
         "method-override": "^3.0.0",
         "morgan": "^1.10.0",
         "nodemon": "^2.0.12",
+        "npm": "^7.21.0",
         "prismic-dom": "^2.2.6",
         "pug": "^3.0.2",
         "staticify": "^5.0.0",
+        "ts-node-dev": "^1.1.8",
         "ua-parser-js": "^0.7.28"
     }
 }

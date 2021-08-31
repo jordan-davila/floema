@@ -16,5 +16,7 @@ module.exports = merge(config, {
 
     output: {
         path: path.resolve(__dirname, "public"),
+        hotUpdateChunkFilename: "hot/hot-update.js",
+        hotUpdateMainFilename: "hot/hot-update.json",
     },
 });

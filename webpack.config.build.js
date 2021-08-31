@@ -7,6 +7,8 @@ module.exports = merge(config, {
     mode: "production",
     output: {
         path: path.join(__dirname, "public"),
+        hotUpdateChunkFilename: "hot/hot-update.js",
+        hotUpdateMainFilename: "hot/hot-update.json",
     },
     plugins: [new CleanWebpackPlugin()],
 });
