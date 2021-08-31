@@ -1,50 +1,116 @@
-.detail {
+.details {
+    @extend %cover;
+    @extend %center;
+    background-color: $color-quicksand;
+    color: $color-quarter-spanish-white;
 }
 
-.detail__wrapper {
+.details__wrapper {
+    display: flex;
+    align-items: center;
 }
 
-.detail__media {
+.details__media {
+    height: 78.2rem;
+    width: 55.4rem;
+    position: relative;
 }
 
-.detail__media__image {
+.details__media__image {
+    @extend %cover;
+    object-fit: cover;
 }
 
-.detail__information {
+.details__information {
+    padding-left: 8.2rem;
 }
 
-.detail__information__collection {
+.details__information__collection {
+    @extend %description-12;
+    text-transform: uppercase;
+    margin-bottom: 4rem;
 }
 
-.detail__information__title {
+.details__information__title {
+    @extend %title-120;
+    max-width: 60rem;
+    padding-right: 2.5rem;
 }
 
-.detail__information__content {
+.details__information__content {
+    padding-left: 18rem;
 }
 
-.detail__information__highlights {
+.details__information__highlights {
+    margin-top: 6rem;
 }
 
-.detail__information__highlights__icon {
+.details__information__highlight {
+    @extend %description-16;
+    align-items: center;
+    display: flex;
+
+    &:not(:first-child) {
+        margin-top: 4rem;
+    }
 }
 
-.detail__information__highlights__icon {
+.details__information__highlight__icon {
+    border-radius: 50%;
+    margin-right: 3.75rem;
+    height: 4rem;
+    width: 4rem;
 }
 
-.detail__information__hightlights__text {
+.details__information__hightlight__text {
+    @extend %description-16;
 }
 
-.detail__information__list {
+.details__information__list {
+    margin-top: 4rem;
 }
 
-.detail__information__item {
+.details__information__item {
+    display: flex;
+
+    &:not(:first-child) {
+        margin-top: 4rem;
+    }
 }
 
-.detail__information__item__label {
+.details__information__item__label {
+    @extend %description-12;
+    width: 10rem;
 }
 
-.detail__information__item__description {
+.details__information__item__description {
+    @extend %description-16;
+    max-width: 44rem;
+    letter-spacing: 0.03rem;
 }
 
-.detail__information__link {
+.details__information__link {
+    @extend %title-30;
+    display: inline-block;
+    margin-top: 3rem;
+}
+
+.details__button {
+    @extend %description-14;
+    letter-spacing: 0.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12.4rem;
+    height: 6rem;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+.details__button__icon {
+    @extend %cover;
 }
