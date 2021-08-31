@@ -1,3 +1,5 @@
+@import "./base/reset";
+
 @import "./utils/variables";
 @import "./utils/functions";
 @import "./utils/responsive";
@@ -5,10 +7,11 @@
 @import "./utils/vendors";
 
 @import "./base/fonts";
-@import "./base/reset";
 @import "./base/base";
 
-@import "./shared/links";
+@import "./shared/titles";
+@import "./shared/vertical-titles";
+@import "./shared/descriptions";
 @import "./shared/sections";
 
 @import "./components/canvas";
