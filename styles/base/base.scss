@@ -1,4 +1,35 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+html {
+    // Size of your xd,sketch or figma artboard
+    // Needs to be 10px based on the screen width
+    font-size: calc(100vw / 1920 * 10);
+    line-height: 1;
+}
+
 body {
+    @extend %description-18;
     font-family: $font-suisse-bp;
-    font-size: 16px;
+}
+
+a {
+    color: inherit;
+    outline: none;
+    text-decoration: none;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    outline: none;
+}
+
+img {
+    vertical-align: middle;
 }
