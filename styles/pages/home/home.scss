@@ -66,6 +66,12 @@
     position: absolute;
     text-transform: uppercase;
     z-index: 2;
+
+    @include media("<phone") {
+        bottom: 7.5rem;
+        height: 13.7rem;
+        width: 55rem;
+    }
 }
 
 .home__link__icon {
