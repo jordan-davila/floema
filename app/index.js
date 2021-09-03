@@ -3,12 +3,19 @@ import Collections from "./pages/Collections";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
 import each from "lodash/each";
+import Preloader from "components/Preloader";
 
 class App {
     constructor() {
         this.createContent();
+        this.createPreloader();
         this.createPages();
         this.addLinkListeners();
+    }
+
+    createPreloader() {
+        this.preloader = new Preloader();
+        this.preloader.once("completed", (_) => this.onPreloaded()); // or just bind this eg: this.onPreloaded.bind(this)
     }
 
     createContent() {
@@ -25,10 +32,12 @@ class App {
         };
 
         this.page = this.pages[this.template];
-
-        console.log(this.page);
         this.page.create();
-        this.page.show();
+    }
+
+    onPreloaded() {
+        this.preloader.destroy();
+        this.page.show(); // Animate Page In
     }
 
     async onChange(url) {
@@ -50,6 +59,8 @@ class App {
             this.page = this.pages[this.template];
             this.page.create();
             this.page.show();
+
+            this.addLinkListeners();
         } else {
             console.error("Page request failed.");
         }
