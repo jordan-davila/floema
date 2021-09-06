@@ -5,7 +5,7 @@ export default class About extends Page {
         super({
             id: "about",
             parent: ".about",
-            children: {
+            elements: {
                 navigation: document.querySelector(".navigation"),
                 wrapper: ".about__wrapper",
             },

@@ -5,7 +5,7 @@ export default class Collections extends Page {
         super({
             id: "collections",
             parent: ".collections",
-            children: {
+            elements: {
                 navigation: document.querySelector(".navigation"),
             },
         });

@@ -5,7 +5,7 @@ export default class Details extends Page {
         super({
             id: "details",
             parent: ".details",
-            children: {
+            elements: {
                 navigation: document.querySelector(".navigation"),
             },
         });

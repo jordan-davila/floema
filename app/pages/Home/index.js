@@ -5,7 +5,7 @@ export default class Home extends Page {
         super({
             id: "home",
             parent: ".home",
-            children: {
+            elements: {
                 navigation: document.querySelector(".navigation"),
                 link: ".home__link",
             },

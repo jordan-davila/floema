@@ -2,13 +2,14 @@ import each from "lodash/each";
 import map from "lodash/map";
 import gsap from "gsap";
 import Prefix from "Prefix";
+import normalizeWheel from "normalize-wheel";
 
 export default class Page {
-    constructor({ parent, children, id }) {
+    constructor({ parent, elements, id }) {
         this.id = id;
         this.parentSelector = parent;
         this.childrenSelectors = {
-            ...children,
+            ...elements,
         };
 
         this.transformPrefix = Prefix("transform");
@@ -17,7 +18,7 @@ export default class Page {
 
     create() {
         this.parent = document.querySelector(this.parentSelector);
-        this.children = {};
+        this.elements = {};
 
         this.scroll = {
             current: 0,
@@ -28,14 +29,14 @@ export default class Page {
 
         each(this.childrenSelectors, (entry, key) => {
             if (entry instanceof window.HTMLElement || entry instanceof window.NodeList || Array.isArray(entry)) {
-                this.children[key] = entry;
+                this.elements[key] = entry;
             } else {
-                this.children[key] = document.querySelectorAll(entry);
+                this.elements[key] = document.querySelectorAll(entry);
 
-                if (this.children[key].length === 0) {
-                    this.children[key] === null;
-                } else if (this.children[key].length === 1) {
-                    this.children[key] = document.querySelector(entry);
+                if (this.elements[key].length === 0) {
+                    this.elements[key] === null;
+                } else if (this.elements[key].length === 1) {
+                    this.elements[key] = document.querySelector(entry);
                 }
             }
         });
@@ -64,13 +65,13 @@ export default class Page {
     }
 
     onMouseWheel(event) {
-        const { deltaY } = event;
-        this.scroll.target += deltaY;
+        const { pixelY } = normalizeWheel(event);
+        this.scroll.target += pixelY;
     }
 
     onResize() {
-        if (this.children.wrapper) {
-            this.scroll.limit = this.children.wrapper.clientHeight - window.innerHeight;
+        if (this.elements.wrapper) {
+            this.scroll.limit = this.elements.wrapper.clientHeight - window.innerHeight;
         }
     }
 
@@ -82,8 +83,8 @@ export default class Page {
             this.scroll.current = 0;
         }
 
-        if (this.children.wrapper) {
-            this.children.wrapper.style[this.transformPrefix] = `translateY(-${this.scroll.current}px)`;
+        if (this.elements.wrapper) {
+            this.elements.wrapper.style[this.transformPrefix] = `translateY(-${this.scroll.current}px)`;
         }
     }
 
