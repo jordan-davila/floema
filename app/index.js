@@ -10,8 +10,14 @@ class App {
         this.createContent();
         this.createPreloader();
         this.createPages();
+        this.addEventListeners();
         this.addLinkListeners();
+        this.update(); // Call per frame
     }
+
+    /***
+     *  Create
+     */
 
     createPreloader() {
         this.preloader = new Preloader();
@@ -35,8 +41,13 @@ class App {
         this.page.create();
     }
 
+    /***
+     *  Events
+     */
+
     onPreloaded() {
         this.preloader.destroy();
+        this.page.onResize();
         this.page.show(); // Animate Page In
     }
 
@@ -58,12 +69,39 @@ class App {
 
             this.page = this.pages[this.template];
             this.page.create();
+            this.page.onResize();
             this.page.show();
 
             this.addLinkListeners();
         } else {
             console.error("Page request failed.");
         }
+    }
+
+    onResize() {
+        if (this.page && this.page.onResize) {
+            this.page.onResize();
+        }
+    }
+
+    /***
+     *  Loop
+     */
+
+    update() {
+        if (this.page && this.page.update) {
+            this.page.update();
+        }
+
+        this.frame = window.requestAnimationFrame(this.update.bind(this));
+    }
+
+    /***
+     *  Listeners
+     */
+
+    addEventListeners() {
+        window.addEventListener("resize", this.onResize.bind(this));
     }
 
     addLinkListeners() {

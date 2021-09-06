@@ -1,0 +1,8 @@
+%page {
+    @extend %cover;
+    opacity: 0;
+}
+
+%page__wrapper {
+    color: inherit;
+}

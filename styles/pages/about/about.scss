@@ -1,7 +1,8 @@
 .about {
+    @extend %page;
+
     background-color: $color-cadet-blue;
     color: $color-bright-gray;
-    opacity: 0;
 }
 
 .about__wrapper {

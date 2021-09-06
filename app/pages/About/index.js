@@ -7,6 +7,7 @@ export default class About extends Page {
             parent: ".about",
             children: {
                 navigation: document.querySelector(".navigation"),
+                wrapper: ".about__wrapper",
             },
         });
     }
