@@ -31,6 +31,7 @@
         "imagemin-optipng": "^8.0.0",
         "include-media": "^1.4.10",
         "mini-css-extract-plugin": "^2.2.0",
+        "normalize-wheel": "^1.0.1",
         "postcss-loader": "^6.1.1",
         "prefix": "^1.0.0",
         "prettier": "^2.3.2",
