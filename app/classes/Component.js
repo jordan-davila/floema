@@ -15,7 +15,12 @@ export default class Component extends EventEmitter {
     }
 
     create() {
-        this.parent = document.querySelector(this.parentSelector);
+        if (this.parentSelector instanceof window.HTMLElement) {
+            this.parent = this.parentSelector;
+        } else {
+            this.parent = document.querySelector(this.parentSelector);
+        }
+
         this.elements = {};
 
         each(this.childrenSelectors, (entry, key) => {

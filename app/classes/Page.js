@@ -3,6 +3,10 @@ import map from "lodash/map";
 import gsap from "gsap";
 import Prefix from "Prefix";
 import normalizeWheel from "normalize-wheel";
+import Title from "animations/Title";
+import Label from "animations/Label";
+import Paragraph from "animations/Paragraph";
+import Highlight from "animations/Highlight";
 
 export default class Page {
     constructor({ parent, elements, id }) {
@@ -10,6 +14,10 @@ export default class Page {
         this.parentSelector = parent;
         this.childrenSelectors = {
             ...elements,
+            animationsTitles: '[data-animation="title"]',
+            animationsLabels: '[data-animation="label"]',
+            animationsParagraphs: '[data-animation="paragraph"]',
+            animationsHighlights: '[data-animation="highlight"]',
         };
 
         this.transformPrefix = Prefix("transform");
@@ -40,6 +48,43 @@ export default class Page {
                 }
             }
         });
+
+        this.createAnimations();
+    }
+
+    createAnimations() {
+        this.animations = [];
+
+        this.animationsTitles = map(this.elements.animationsTitles, (element) => {
+            return new Title({
+                parent: element,
+            });
+        });
+
+        this.animationsLabels = map(this.elements.animationsLabels, (element) => {
+            return new Label({
+                parent: element,
+            });
+        });
+
+        this.animationsParagraphs = map(this.elements.animationsParagraphs, (element) => {
+            return new Paragraph({
+                parent: element,
+            });
+        });
+
+        this.animationsHighlights = map(this.elements.animationsHighlights, (element) => {
+            return new Highlight({
+                parent: element,
+            });
+        });
+
+        this.animations.push(
+            ...this.animationsTitles,
+            ...this.animationsLabels,
+            ...this.animationsParagraphs,
+            ...this.animationsHighlights
+        );
     }
 
     show() {
@@ -73,6 +118,8 @@ export default class Page {
         if (this.elements.wrapper) {
             this.scroll.limit = this.elements.wrapper.clientHeight - window.innerHeight;
         }
+
+        each(this.animations, (animation) => animation.onResize());
     }
 
     update() {
