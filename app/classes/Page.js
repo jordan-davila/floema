@@ -7,6 +7,8 @@ import Title from "animations/Title";
 import Label from "animations/Label";
 import Paragraph from "animations/Paragraph";
 import Highlight from "animations/Highlight";
+import { ColorsManager } from "classes/Colors";
+import AsyncLoad from "classes/AsyncLoad";
 
 export default class Page {
     constructor({ parent, elements, id }) {
@@ -18,11 +20,17 @@ export default class Page {
             animationsLabels: '[data-animation="label"]',
             animationsParagraphs: '[data-animation="paragraph"]',
             animationsHighlights: '[data-animation="highlight"]',
+
+            preloaders: "[data-src]",
         };
 
         this.transformPrefix = Prefix("transform");
         this.onMouseWheelEvent = this.onMouseWheel.bind(this);
     }
+
+    /**
+     * Creators
+     */
 
     create() {
         this.parent = document.querySelector(this.parentSelector);
@@ -50,6 +58,7 @@ export default class Page {
         });
 
         this.createAnimations();
+        this.createPreloaders();
     }
 
     createAnimations() {
@@ -87,8 +96,22 @@ export default class Page {
         );
     }
 
+    createPreloaders() {
+        this.preloaders = map(this.elements.preloaders, (element) => {
+            return new AsyncLoad({ parent: element });
+        });
+    }
+
+    /**
+     * Animations
+     */
+
     show() {
         return new Promise((resolve) => {
+            ColorsManager.change({
+                backgroundColor: this.parent.getAttribute("data-background"),
+                color: this.parent.getAttribute("data-color"),
+            });
             this.animationIn = gsap.timeline();
             this.animationIn.fromTo(this.parent, { autoAlpha: 0 }, { autoAlpha: 1 });
             this.animationIn.call((_) => {
@@ -100,7 +123,7 @@ export default class Page {
 
     hide() {
         return new Promise((resolve) => {
-            this.removeEventListeners();
+            this.destroy();
             this.animationOut = gsap.timeline();
             this.animationOut.to(this.parent, {
                 autoAlpha: 0,
@@ -109,8 +132,13 @@ export default class Page {
         });
     }
 
+    /**
+     * Events
+     */
+
     onMouseWheel(event) {
         const { pixelY } = normalizeWheel(event);
+        // var nextPos = 10 * pixelY;
         this.scroll.target += pixelY;
     }
 
@@ -121,6 +149,10 @@ export default class Page {
 
         each(this.animations, (animation) => animation.onResize());
     }
+
+    /**
+     * Loop
+     */
 
     update() {
         this.scroll.target = gsap.utils.clamp(0, this.scroll.limit, this.scroll.target);
@@ -135,11 +167,19 @@ export default class Page {
         }
     }
 
+    /**
+     * Listeners
+     */
+
     addEventListeners() {
         window.addEventListener("mousewheel", this.onMouseWheelEvent);
     }
 
     removeEventListeners() {
         window.removeEventListener("mousewheel", this.onMouseWheelEvent);
+    }
+
+    destroy() {
+        this.removeEventListeners();
     }
 }

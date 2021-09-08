@@ -24,6 +24,9 @@ body {
     @extend %description-16;
     font-family: $font-suisse-bp;
     position: fixed;
+
+    // background-color: $color-contessa;
+    // color: $color-quarter-spanish-white;
 }
 
 a {
@@ -41,7 +44,13 @@ button {
 }
 
 img {
+    opacity: 0;
     vertical-align: middle;
+    transition: 0.4s ease;
+
+    &.loaded {
+        opacity: 1;
+    }
 }
 
 .content {
