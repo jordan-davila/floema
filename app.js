@@ -2,6 +2,7 @@ require("dotenv").config();
 const app = require("./config");
 const Prismic = require("@prismicio/client");
 const PrismicDOM = require("prismic-dom");
+const UAParser = require("ua-parser-js");
 
 const handleLinkResolver = (doc) => {
     if (doc.type === "product") {
@@ -20,6 +21,11 @@ const handleLinkResolver = (doc) => {
 };
 
 app.use((req, res, next) => {
+    const ua = UAParser(req.headers["user-agent"]);
+    res.locals.isDesktop = ua.device.type === undefined;
+    res.locals.isPhone = ua.device.type === "mobile";
+    res.locals.isTablet = ua.device.type === "tablet";
+
     res.locals.Link = handleLinkResolver;
     res.locals.PrismicDOM = PrismicDOM;
     res.locals.getNumberByIndex = (index) => {
