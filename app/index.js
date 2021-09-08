@@ -1,27 +1,38 @@
+import each from "lodash/each";
 import About from "./pages/About";
 import Collections from "./pages/Collections";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
-import each from "lodash/each";
 import Preloader from "components/Preloader";
+import Navigation from "components/Navigation";
 
 class App {
     constructor() {
         this.createContent();
+
         this.createPreloader();
+        this.createNavigation();
         this.createPages();
+
         this.addEventListeners();
         this.addLinkListeners();
-        this.update(); // Call per frame
+
+        this.update();
     }
 
     /***
      *  Create
      */
 
+    createNavigation() {
+        this.navigation = new Navigation({
+            template: this.template,
+        });
+    }
+
     createPreloader() {
         this.preloader = new Preloader();
-        this.preloader.once("completed", (_) => this.onPreloaded()); // or just bind this eg: this.onPreloaded.bind(this)
+        this.preloader.once("completed", this.onPreloaded.bind(this));
     }
 
     createContent() {
@@ -47,11 +58,19 @@ class App {
 
     onPreloaded() {
         this.preloader.destroy();
-        this.page.onResize();
-        this.page.show(); // Animate Page In
+        this.onResize();
+        this.page.show();
     }
 
-    async onChange(url) {
+    onPopState() {
+        this.onChange({
+            url: window.location.pathname,
+            push: false,
+        });
+    }
+
+    async onChange({ url, push = true }) {
+        console.log(url);
         await this.page.hide();
         const request = await window.fetch(url);
 
@@ -59,17 +78,24 @@ class App {
             const html = await request.text();
             const div = document.createElement("div");
 
+            if (push) {
+                window.history.pushState({}, "", url);
+            }
+            console.log(window.history);
+
             div.innerHTML = html;
             const divContent = div.querySelector(".content");
 
             this.template = divContent.getAttribute("data-template");
+
+            this.navigation.onChange(this.template);
 
             this.content.setAttribute("data-template", this.template);
             this.content.innerHTML = divContent.innerHTML;
 
             this.page = this.pages[this.template];
             this.page.create();
-            this.page.onResize();
+            this.onResize();
             this.page.show();
 
             this.addLinkListeners();
@@ -101,6 +127,7 @@ class App {
      */
 
     addEventListeners() {
+        window.addEventListener("popstate", this.onPopState.bind(this));
         window.addEventListener("resize", this.onResize.bind(this));
     }
 
@@ -111,7 +138,7 @@ class App {
             link.onclick = (event) => {
                 event.preventDefault();
                 const { href } = link;
-                this.onChange(href);
+                this.onChange({ url: href });
             };
         });
     }
