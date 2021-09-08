@@ -4,7 +4,7 @@ block variables
     - var template = 'details';
 
 block content
-    .details
+    .details(data-background="#bc978c", data-color="#f9f1e7")
         .details__wrapper
             figure.details__media
                 img.details__media__image(alt=product.data.image.alt, data-src=product.data.image.url)
@@ -41,3 +41,4 @@ block content
             button.details__button Close
                 svg.details__button__icon(xmlns="http://www.w3.org/2000/svg", viewBox="0 0 124 60")
                     path(stroke="currentColor", fill="none", d="M62,0.5c33.97,0,61.5,13.21,61.5,29.5S95.97,59.5,62,59.5S0.5,46.29,0.5,30S28.03,0.5,62,0.5z")
+                    path.details__button_icon__path(stroke="#ffc400", fill="none", d="M62,0.5c33.97,0,61.5,13.21,61.5,29.5S95.97,59.5,62,59.5S0.5,46.29,0.5,30S28.03,0.5,62,0.5z")
