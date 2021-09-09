@@ -1,4 +1,6 @@
 import { Camera, Renderer, Transform, Box, Program, Mesh } from "ogl";
+import fragment from "shaders/plane-fragment.glsl";
+import vertex from "shaders/plane-vertex.glsl";
 
 export default class Canvas {
     constructor() {
@@ -21,21 +23,8 @@ export default class Canvas {
     createCube() {
         this.geometry = new Box(this.gl);
         this.program = new Program(this.gl, {
-            vertex: `
-            attribute vec3 position;
-
-            uniform mat4 modelViewMatrix;
-            uniform mat4 projectionMatrix;
-
-            void main() {
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-            `,
-            fragment: `
-            void main() {
-                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-            }
-        `,
+            vertex,
+            fragment,
         });
 
         this.mesh = new Mesh(this.gl, { geometry: this.geometry, program: this.program });
