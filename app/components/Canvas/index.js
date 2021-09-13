@@ -4,9 +4,22 @@ import Home from "./Home";
 
 export default class Canvas {
     constructor() {
+        this.x = {
+            start: 0,
+            end: 0,
+            distance: 0,
+        };
+
+        this.y = {
+            start: 0,
+            end: 0,
+            distance: 0,
+        };
+
         this.createRenderer();
         this.createScene();
         this.createCamera();
+        this.onResize();
         this.createHome();
     }
 
@@ -21,7 +34,7 @@ export default class Canvas {
     }
 
     createHome() {
-        this.home = new Home({ gl: this.gl, scene: this.scene });
+        this.home = new Home({ gl: this.gl, scene: this.scene, sizes: this.sizes });
     }
 
     createCamera() {
@@ -29,14 +42,78 @@ export default class Canvas {
         this.camera.position.z = 5;
     }
 
+    /**
+     * Events
+     */
     onResize() {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.camera.perspective({
             aspect: window.innerWidth / window.innerHeight,
         });
+
+        const fov = this.camera.fov * (Math.PI / 180);
+        const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
+        const width = height * this.camera.aspect;
+
+        this.sizes = { height, width };
+
+        if (this.home) {
+            this.home.onResize({ sizes: this.sizes });
+        }
     }
 
-    update() {
+    onTouchDown(event) {
+        this.isDown = true;
+        this.x.start = event.touches ? event.touches[0].clientX : event.clientX;
+        this.y.start = event.touches ? event.touches[0].clientY : event.clientY;
+
+        if (this.home) {
+            this.home.onTouchDown({
+                x: this.x,
+                y: this.y,
+            });
+        }
+    }
+
+    onTouchMove(event) {
+        if (!this.isDown) return;
+        const x = event.touches ? event.touches[0].clientX : event.clientX;
+        const y = event.touches ? event.touches[0].clientY : event.clientY;
+
+        this.x.end = x;
+        this.y.end = y;
+
+        if (this.home) {
+            this.home.onTouchMove({
+                x: this.x,
+                y: this.y,
+            });
+        }
+    }
+
+    onTouchUp(event) {
+        this.isDown = false;
+        const x = event.touches ? event.touches[0].clientX : event.clientX;
+        const y = event.touches ? event.touches[0].clientY : event.clientY;
+
+        this.x.end = x;
+        this.y.end = y;
+
+        if (this.home) {
+            this.home.onTouchUp({
+                x: this.x,
+                y: this.y,
+            });
+        }
+    }
+
+    /**
+     * Loop
+     */
+    update(scroll) {
+        if (this.home) {
+            this.home.update();
+        }
         this.renderer.render({ scene: this.scene, camera: this.camera });
     }
 }
