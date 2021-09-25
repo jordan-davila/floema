@@ -26,6 +26,7 @@ export default class Canvas {
     createRenderer() {
         this.renderer = new Renderer({
             alpha: true,
+            antialias: true,
         });
         this.gl = this.renderer.gl;
         document.body.appendChild(this.gl.canvas);
