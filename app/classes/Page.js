@@ -2,7 +2,6 @@ import each from "lodash/each";
 import map from "lodash/map";
 import gsap from "gsap";
 import Prefix from "Prefix";
-import normalizeWheel from "normalize-wheel";
 import Title from "animations/Title";
 import Label from "animations/Label";
 import Paragraph from "animations/Paragraph";
@@ -25,7 +24,6 @@ export default class Page {
         };
 
         this.transformPrefix = Prefix("transform");
-        this.onMouseWheelEvent = this.onMouseWheel.bind(this);
     }
 
     /**
@@ -136,18 +134,17 @@ export default class Page {
      * Events
      */
 
-    onMouseWheel(event) {
-        const { pixelY } = normalizeWheel(event);
-        // var nextPos = 10 * pixelY;
-        this.scroll.target += pixelY;
-    }
-
     onResize() {
         if (this.elements.wrapper) {
             this.scroll.limit = this.elements.wrapper.clientHeight - window.innerHeight;
         }
 
         each(this.animations, (animation) => animation.onResize());
+    }
+
+    onWheel({ pixelY }) {
+        // var nextPos = 10 * pixelY;
+        this.scroll.target += pixelY;
     }
 
     /**
@@ -171,13 +168,9 @@ export default class Page {
      * Listeners
      */
 
-    addEventListeners() {
-        window.addEventListener("mousewheel", this.onMouseWheelEvent);
-    }
+    addEventListeners() {}
 
-    removeEventListeners() {
-        window.removeEventListener("mousewheel", this.onMouseWheelEvent);
-    }
+    removeEventListeners() {}
 
     destroy() {
         this.removeEventListeners();

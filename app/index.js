@@ -1,3 +1,4 @@
+import normalizeWheel from "normalize-wheel";
 import each from "lodash/each";
 import About from "./pages/About";
 import Collections from "./pages/Collections";
@@ -111,12 +112,15 @@ class App {
     }
 
     onResize() {
-        if (this.canvas && this.canvas.onResize) {
-            this.canvas.onResize();
-        }
         if (this.page && this.page.onResize) {
             this.page.onResize();
         }
+
+        window.requestAnimationFrame((_) => {
+            if (this.canvas && this.canvas.onResize) {
+                this.canvas.onResize();
+            }
+        });
     }
 
     onTouchDown(event) {
@@ -124,14 +128,28 @@ class App {
             this.canvas.onTouchDown(event);
         }
     }
+
     onTouchMove(event) {
         if (this.canvas && this.canvas.onResize) {
             this.canvas.onTouchMove(event);
         }
     }
+
     onTouchUp(event) {
         if (this.canvas && this.canvas.onResize) {
             this.canvas.onTouchUp(event);
+        }
+    }
+
+    onWheel(event) {
+        const normalizedWheel = normalizeWheel(event);
+
+        if (this.canvas && this.canvas.update) {
+            this.canvas.onWheel(normalizedWheel);
+        }
+
+        if (this.page && this.page.update) {
+            this.page.onWheel(normalizedWheel);
         }
     }
 
@@ -159,6 +177,7 @@ class App {
         window.addEventListener("mousedown", this.onTouchDown.bind(this));
         window.addEventListener("mousemove", this.onTouchMove.bind(this));
         window.addEventListener("mouseup", this.onTouchUp.bind(this));
+        window.addEventListener("mousewheel", this.onWheel.bind(this));
 
         window.addEventListener("touchstart", this.onTouchDown.bind(this));
         window.addEventListener("touchmove", this.onTouchMove.bind(this));
@@ -166,6 +185,10 @@ class App {
 
         window.addEventListener("popstate", this.onPopState.bind(this));
         window.addEventListener("resize", this.onResize.bind(this));
+    }
+
+    removeEventListeners() {
+        window.removeEventListener("mousewheel", this.onWheel);
     }
 
     addLinkListeners() {
