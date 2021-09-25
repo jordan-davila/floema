@@ -12,9 +12,14 @@ block content
                     .home__titles__title= collection.data.title
 
             .home__gallery
-                each media in home.data.gallery
-                    figure.home__gallery__media
+                - var iteration = 1;
+                each media, index in home.data.gallery
+                    figure.home__gallery__media(class='home__gallery__media--' + iteration)
                         img.home__gallery__media__image(alt=media.image.alt, data-src=media.image.url)
+                    if (iteration === 5)
+                        - iteration = 1;
+                    else
+                        - iteration++;
 
             a.home__link(href=Link(home.data.collections))= home.data.button
                 svg.home__link__icon(xmlns="http://www.w3.org/2000/svg", viewBox="0 0 288 60")
