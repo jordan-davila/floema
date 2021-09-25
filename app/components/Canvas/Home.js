@@ -64,6 +64,13 @@ export default class Home {
         this.galleryBounds = this.galleryElement.getBoundingClientRect();
         map(this.medias, (media) => media.onResize(event));
         this.sizes = event.sizes;
+
+        this.gallerySizes = {
+            //prettier-ignore
+            width: this.galleryBounds.width / window.innerWidth * this.sizes.width,
+            //prettier-ignore
+            height: this.galleryBounds.height / window.innerHeight * this.sizes.height,
+        };
     }
 
     onTouchDown({ x, y }) {
@@ -102,36 +109,34 @@ export default class Home {
             this.y.direction = "down";
         }
 
-        //prettier-ignore
-        this.galleryWidth = this.galleryBounds.width / window.innerWidth * this.sizes.width;
-        //prettier-ignore
-        this.galleryHeight = this.galleryBounds.height / window.innerHeight * this.sizes.height;
-
         this.scroll.x = this.x.current;
         this.scroll.y = this.y.current;
 
         map(this.medias, (media, index) => {
+            const scaleX = media.mesh.scale.x / 2;
+            const scaleY = media.mesh.scale.y / 2;
+
             if (this.x.direction === "left") {
-                const x = media.mesh.position.x + media.mesh.scale.x / 2;
+                const x = media.mesh.position.x + scaleX;
                 if (x < -this.sizes.width / 2) {
-                    media.extra.x += this.galleryWidth;
+                    media.extra.x += this.gallerySizes.width;
                 }
             } else if (this.x.direction === "right") {
-                const x = media.mesh.position.x - media.mesh.scale.x / 2;
+                const x = media.mesh.position.x - scaleX;
                 if (x > this.sizes.width / 2) {
-                    media.extra.x -= this.galleryWidth;
+                    media.extra.x -= this.gallerySizes.width;
                 }
             }
 
             if (this.y.direction === "up") {
-                const y = media.mesh.position.y + media.mesh.scale.y / 2;
+                const y = media.mesh.position.y + scaleY;
                 if (y < -this.sizes.height / 2) {
-                    media.extra.y += this.galleryHeight;
+                    media.extra.y += this.gallerySizes.height;
                 }
             } else if (this.y.direction === "down") {
-                const y = media.mesh.position.y - media.mesh.scale.y / 2;
+                const y = media.mesh.position.y - scaleY;
                 if (y > this.sizes.height / 2) {
-                    media.extra.y -= this.galleryHeight;
+                    media.extra.y -= this.gallerySizes.height;
                 }
             }
 
